@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
+using Tbot.Controllers;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Polling;
@@ -14,11 +15,24 @@ namespace Tbot;
 
 public class Bot : BackgroundService
 {
+    //Клиент к телеграм Бот APi
     private ITelegramBotClient _telegramClient;
+    private DefaultMessageController _defaultMessageController;
+    private InlineKeyboardController _inlineKeyboardController;
+    private TextMessageController _textMessageController;
+    private VoiceMessageController _voiceMessageController;
 
-    public Bot(ITelegramBotClient telegramClient)
+    public Bot(ITelegramBotClient telegramClient,
+        InlineKeyboardController inlineKeyboardController,
+        TextMessageController textMessageController,
+        VoiceMessageController voiceMessageController,
+        DefaultMessageController defaultMessageController)
     {
         _telegramClient = telegramClient;
+        _inlineKeyboardController = inlineKeyboardController;
+        _textMessageController = textMessageController;
+        _voiceMessageController = voiceMessageController;
+        _defaultMessageController = defaultMessageController;
     }
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -39,15 +53,31 @@ public class Bot : BackgroundService
         //  Обрабатываем нажатия на кнопки  из Telegram Bot API: https://core.telegram.org/bots/api#callbackquery
         if (update.Type == UpdateType.CallbackQuery)
         {
+
             await
-                _telegramClient.SendMessageAsync(update.Message.Chat.Id, "Вы нажали кнопку", cancellationToken: cancellationToken);
-            return;
+                _inlineKeyboardController.Handle(update.CallbackQuery, cancellationToken);
         }
         if (update.Type == UpdateType.Message)
         {
-            await
-                _telegramClient.SendMessageAsync(update.Message.Chat.Id, "Вы отпаравили сообщение", cancellationToken: cancellationToken);
-            return;
+            switch (update.Message!.Type)
+            {
+                case MessageType.Voice:
+                    await
+                        _voiceMessageController.Handle(update.Message, cancellationToken);
+                    return;
+
+                case MessageType.Text:
+                    await
+                        _textMessageController.Handle(update.Message, cancellationToken);
+                    return;
+
+                default:
+                    await
+                        _defaultMessageController.Handle(update.Message, cancellationToken);
+                    return;
+            }
+
+
         }
     }
 

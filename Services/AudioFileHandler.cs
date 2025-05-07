@@ -1,0 +1,49 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Telegram.Bot;
+using Tbot.Configuration;
+
+
+namespace Tbot.Services
+{
+    public class AudioFileHandler : IFileHandler
+    {
+        private readonly AppSettings _appSettings;
+        private readonly ITelegramBotClient _telegramClient;
+
+        public AudioFileHandler(AppSettings appSettings, ITelegramBotClient telegramClient)
+        {
+            _appSettings = appSettings;
+            _telegramClient = telegramClient;
+
+        }
+
+        public async Task Download(string fileId, CancellationToken ct)
+        {
+            // Генерируем полный путь файла из конфигурации
+            string inputAudioFilePath = Path.Combine(_appSettings.DownloadsFolder, $"" +
+                $"{_appSettings.AudioFileName}.{_appSettings.InputAudioFormat}");
+            using (FileStream destinationStream = File.Create(inputAudioFilePath))
+            {
+                //Загружаем информацию о файле
+                var file = await
+                    _telegramClient.GetFile(fileId, ct);
+                if (file.FilePath == null)
+                    return;
+
+                //Скачиваем файл
+                await
+                    _telegramClient.DownloadFile(file.FilePath, destinationStream, ct);
+            }
+        }
+        public string Process(string langeageCode)
+        {
+            // Метод пока не реализован
+            throw new NotImplementedException();
+        }
+
+    }
+}

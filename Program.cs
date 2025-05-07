@@ -36,6 +36,7 @@ namespace Tbot
             services.AddTransient<TextMessageController>();
             services.AddTransient<InlineKeyboardController>();
             services.AddSingleton<IStorage, MemoryStorage>();
+            services.AddSingleton<IFileHandler, AudioFileHandler>();
             //Регистрируем объект TelegramBotClient с токеном подключения
             services.AddSingleton<ITelegramBotClient>(provider => new TelegramBotClient("7718435678:AAH4BrfLohZdv9lprSTzGOoaN5cUYPX4y7g"));
             //Регистрируем постоянно активный сервис бота
@@ -47,7 +48,10 @@ namespace Tbot
         {
             return new AppSettings()
             {
-                BotToken = "5353047760:AAECHVcGyM-cQJIfA4sCStnGDBPimhlIV-g"
+                DownloadsFolder = "C:\\Users\\фвьшт\\Downloads\\Tbot\"",
+                BotToken = "5353047760:AAECHVcGyM-cQJIfA4sCStnGDBPimhlIV-g", // откуда мы его взяли?
+                AudioFileName = "audio",
+                InputAudioFormat = "ogg",
             };
         }
     }

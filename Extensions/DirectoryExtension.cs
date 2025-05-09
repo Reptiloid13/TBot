@@ -16,8 +16,7 @@ namespace Tbot.Extensions
             var fullname = Directory.GetParent(dir).FullName;
             var projectRoot = fullname.Substring(0, fullname.Length - 4);
             return Directory.GetParent(projectRoot)?.FullName;
-
         }
     }
-
+    C:\Users\фвьшт\.nuget\packages\ffmpegcore\5.2.0\
 }

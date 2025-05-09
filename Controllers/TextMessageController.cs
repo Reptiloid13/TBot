@@ -35,7 +35,7 @@ public class TextMessageController
                 });
                 //Передаем кнопки вместе с сообщением (параметр ReplyMarkup)
                 await
-                    _telegramClient.SendMessage(message.Chat.Id, $"<b> Кристюша, этот   бот превращает аудио в текст." +
+                    _telegramClient.SendMessage(message.Chat.Id, $"<b> Этот   бот превращает аудио в текст." +
                     $"</b> {Environment.NewLine}" + $"{Environment.NewLine} Можешь  записать  свои голосовые сообщения и переслать их сюда, если лень печатать. {Environment.NewLine}", cancellationToken: ct,
                     parseMode: ParseMode.Html, replyMarkup: new InlineKeyboardMarkup(buttons));
 

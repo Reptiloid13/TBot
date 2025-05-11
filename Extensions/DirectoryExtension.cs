@@ -10,7 +10,7 @@ namespace Tbot.Extensions
     {
         //Получаем путь до каталога с .sln файлом
 
-        public static string GetSolustionRoot()
+        public static string GetSolutionRoot()
         {
             var dir = Path.GetDirectoryName(Directory.GetCurrentDirectory());
             var fullname = Directory.GetParent(dir).FullName;
@@ -18,5 +18,5 @@ namespace Tbot.Extensions
             return Directory.GetParent(projectRoot)?.FullName;
         }
     }
-    C:\Users\фвьшт\.nuget\packages\ffmpegcore\5.2.0\
+
 }

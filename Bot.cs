@@ -74,6 +74,7 @@ public class Bot : BackgroundService
                 default:
                     await
                         _defaultMessageController.Handle(update.Message, cancellationToken);
+
                     return;
             }
 
@@ -81,7 +82,7 @@ public class Bot : BackgroundService
         }
     }
 
-    public Task HandleErrorAsync(ITelegramBotClient botClietnt, Exception exception, CancellationToken cancellationToken)
+    public async Task HandleErrorAsync(ITelegramBotClient botClietnt, Exception exception, CancellationToken cancellationToken)
     {
         //Задаем сообщение об ошибке в зависимости от того, какая именно ошибка произошла
 
@@ -96,8 +97,10 @@ public class Bot : BackgroundService
 
         //Задержка перед повторным подключением
         Console.WriteLine("Ожидаем 10 секунд перед повторным подключением");
-        Thread.Sleep(10000);
-        return Task.CompletedTask;
+        //Thread.Sleep(10000);
+        await Task.Delay(10000, cancellationToken);
+
+        //return Task.CompletedTask;
     }
 }
 

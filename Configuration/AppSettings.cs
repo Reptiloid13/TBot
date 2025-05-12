@@ -21,4 +21,8 @@ public class AppSettings
     // Формат аудио при загрузке
     public string InputAudioFormat { get; set; }
 
+    public string OutputAudioFormat { get; set; }
+
+
+    public int InputAudioBitrate { get; set; }
 }

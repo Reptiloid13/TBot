@@ -52,6 +52,8 @@ namespace Tbot
                 BotToken = "7718435678:AAH4BrfLohZdv9lprSTzGOoaN5cUYPX4y7g", // откуда мы его взяли?
                 AudioFileName = "audio",
                 InputAudioFormat = "ogg",
+                OutputAudioFormat = "wav",
+                InputAudioBitrate = 48000,
             };
         }
     }

@@ -24,5 +24,5 @@ public class AppSettings
     public string OutputAudioFormat { get; set; }
 
 
-    public int InputAudioBitrate { get; set; }
+    public float InputAudioBitrate { get; set; }
 }

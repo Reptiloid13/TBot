@@ -17,7 +17,7 @@ public class VoiceMessageController
     private readonly IFileHandler _audioFileHandler;
     private readonly IStorage _memoryStorage; // Добавили вместо addsettings
 
-    public VoiceMessageController(IStorage memoryStorage, ITelegramBotClient telegramClient, IFileHandler audioFileHandler)
+    public VoiceMessageController(IStorage memoryStorage, ITelegramBotClient telegramClient, IFileHandler audioFileHandler)//, AppSettings appSettings)
     {
         //_appSettings = appSettings;
         _telegramClient = telegramClient;
@@ -34,13 +34,13 @@ public class VoiceMessageController
 
         await _audioFileHandler.Download(fileId, ct);
 
-        await _telegramClient.SendMessage(message.Chat.Id, $"Голосовое сообщение загружено", cancellationToken: ct);
+        //await _telegramClient.SendMessage(message.Chat.Id, $"Голосовое сообщение загружено", cancellationToken: ct);
 
         string userLanguageCode = _memoryStorage.GetSession(message.Chat.Id).LanguageCode; //Здесь получим язык из сессии пользователя
 
-        _audioFileHandler.Process(userLanguageCode); // запустим обработку
+        var result = _audioFileHandler.Process(userLanguageCode); // запустим обработку
 
-        await _telegramClient.SendMessage(message.Chat.Id, "Голосовое сообщение конвертировано в формат .WAV", canellationToken: ct);
+        await _telegramClient.SendMessage(message.Chat.Id, result, cancellationToken: ct);
 
     }
 }
